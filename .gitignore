@@ -1,0 +1,52 @@
+# -----------------------------
+# Python
+# -----------------------------
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.venv/
+env/
+.env/
+
+# Build / packaging
+build/
+dist/
+*.egg-info/
+
+# pytest cache
+.pytest_cache/
+
+# -----------------------------
+# IDEs
+# -----------------------------
+
+# PyCharm / IntelliJ
+.idea
+
+# VSCode
+.vscode/
+
+# -----------------------------
+# OS-specific files
+# -----------------------------
+.DS_Store
+Thumbs.db
+
+# -----------------------------
+# Project-specific
+# -----------------------------
+
+# Ignore contents of the resources folder except the submodule pointer
+/resources/*
+!/resources/.git
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/
