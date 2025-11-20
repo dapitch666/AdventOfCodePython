@@ -37,12 +37,15 @@ def solve_part2(raw: str):
     data = parse(raw)
     # TODO: implement part 2 logic
     return None
+    
+if __name__ == "__main__":
+    from aoc.runner import run_day_from_file
+
+    run_day_from_file(__file__, globals())
 """
 
 
 TEST_TEMPLATE = """\
-import pytest
-
 from aoc.year{year} import day{day:02d}
 
 
