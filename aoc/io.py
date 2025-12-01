@@ -23,7 +23,7 @@ def input_path(year: int, day: int) -> Path:
     Example: resources/aoc2024/day1.txt
     """
     root = get_resources_root()
-    return root / f"aoc{year}" / f"day{day}.txt"   # <-- no leading zero
+    return root / f"aoc{year}" / f"day{day}.txt"
 
 
 def get_session_token() -> Optional[str]:
@@ -38,20 +38,25 @@ def get_session_token() -> Optional[str]:
     try:
         import browser_cookie3
 
-        # These functions find cookies from different browsers
+        # Tries multiple browser loaders
         for loader in (
-            browser_cookie3.chrome,
-            browser_cookie3.firefox,
-            browser_cookie3.brave,
-            browser_cookie3.edge,
+                browser_cookie3.brave,
+                browser_cookie3.chrome,
+                browser_cookie3.firefox,
+                browser_cookie3.edge,
+                browser_cookie3.chromium,
         ):
             try:
-                cj = loader()
+                if loader is None:
+                    continue
+
+                cj = loader(domain_name="adventofcode.com")
                 for cookie in cj:
-                    if cookie.domain == "adventofcode.com" and cookie.name == "session":
+                    if cookie.name == "session":
+                        # Return the token immediately upon success
                         return cookie.value
-            except Exception:
-                pass  # ignore if this browser is unavailable
+            except Exception as e:
+                pass
     except ImportError:
         pass
 
