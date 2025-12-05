@@ -20,18 +20,15 @@ def solve_part1(raw: str):
 def solve_part2(raw: str):
     rolls, (w, h) = parse(raw)
     total = 0
-    while True:
-        to_remove = [
-            (r, c)
-            for r in range(h)
-            for c in range(w)
-            if rolls[r][c] == '@' and _is_free_to_remove(rolls, r, c, w, h)
-        ]
-        total += len(to_remove)
-        if not to_remove:
-            break
-        for r, c in to_remove:
-            rolls[r][c] = '.'
+    removed = True
+    while removed:
+        removed = False
+        for r in range(h) :
+            for c in range(w):
+                if rolls[r][c] == '@' and _is_free_to_remove(rolls, r, c, w, h):
+                    rolls[r][c] = '.'
+                    total += 1
+                    removed = True
     return total
 
 
