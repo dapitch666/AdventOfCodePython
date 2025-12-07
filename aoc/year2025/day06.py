@@ -1,9 +1,9 @@
 """Advent of Code 2025 - Day 06: Trash Compactor."""
-from typing import List, Tuple
+from typing import List, Tuple, Callable
 import math
 
 
-def parse(raw: str) -> Tuple[List[List[str]], List[str]]:
+def parse(raw: str) -> tuple[list[list[str]], list[Callable[[list[int]], int]]]:
     """
     Return a list of problem chunks (each chunk is a list of the number-rows as strings)
     and a parallel list of operation characters (one per chunk).
@@ -28,24 +28,13 @@ def parse(raw: str) -> Tuple[List[List[str]], List[str]]:
             i += 1
 
     chunks: List[List[str]] = []
-    ops: List[str] = []
+    ops: List[Callable[[List[int]], int]] = []
     for start, end in blocks:
         chunk_rows = [line[start:end] for line in lines]
-        op_row = chunk_rows[-1]
-        op = next((c for c in op_row if c != " "), "")
-        if op:
-            # store only the number-rows (all rows except the last/op row)
-            chunks.append(chunk_rows[:-1])
-            ops.append(op)
+        chunks.append(chunk_rows[:-1])
+        ops.append(sum if chunk_rows[-1].strip() == "+" else math.prod)
 
     return chunks, ops
-
-
-def compute(op: str, nums: List[int]) -> int:
-    if op == "+":
-        return sum(nums)
-    else:
-        return math.prod(nums)
 
 
 def solve_part1(raw: str):
@@ -55,8 +44,7 @@ def solve_part1(raw: str):
     chunks, ops = parse(raw)
     total = 0
     for chunk_rows, op in zip(chunks, ops):
-        nums = [int(r.strip()) for r in chunk_rows if r.strip()]
-        total += compute(op, nums)
+        total += op([int(r.strip()) for r in chunk_rows if r.strip()])
     return total
 
 
@@ -73,7 +61,7 @@ def solve_part2(raw: str):
         for col in range(width - 1, -1, -1):
             col_chars = [row[col] for row in chunk_rows]
             nums.append(int("".join(col_chars).strip()))
-        total += compute(op, nums)
+        total += op(nums)
     return total
 
 
